@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sell Lemons - Tycoon Clicker</title>
+<style>
+body{font-family:'Segoe UI',Tahoma,sans-serif;background:linear-gradient(135deg,#fef08a,#facc15);color:#1e293b;display:flex;flex-direction:column;align-items:center;min-height:100vh;margin:0;padding:20px 0;transition:background 1s}
+body.stormy{background:linear-gradient(135deg,#1e293b,#0f172a);color:#f8fafc}
+.gc{text-align:center;background:rgba(255,255,255,.95);padding:25px 30px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,.15);border:3px solid #ca8a04;max-width:480px;width:100%;transition:background .5s,border-color .5s}
+body.stormy .gc{background:rgba(30,41,59,.95);border-color:#38bdf8;box-shadow:0 10px 30px rgba(56,189,248,.2)}
+h1{margin-bottom:5px;font-size:2.2rem;color:#b45309;text-shadow:1px 1px 0 #fef08a}
+body.stormy h1{color:#38bdf8;text-shadow:1px 1px 0 #0f172a}
+.st{font-size:.95rem;color:#713f12;margin-bottom:4px;font-weight:bold}
+body.stormy .st{color:#cbd5e1}
+#score{font-size:3.2rem;font-weight:bold;color:#16a34a;margin:10px 0}
+body.stormy #score{color:#4ade80}
+.cw{position:relative;display:inline-block;width:100%;margin-bottom:15px}
+.cb{background:#eab308;color:#713f12;border:3px solid #ca8a04;padding:15px 30px;font-size:1.3rem;font-weight:bold;border-radius:12px;cursor:pointer;transition:.2s;box-shadow:0 5px 0 #b45309;width:100%}
+body.stormy .cb{background:#0284c7;color:#f8fafc;border:3px solid #38bdf8;box-shadow:0 5px 0 #0369a1}
+.cb:hover{background:#fde047}.stormy .cb:hover{background:#38bdf8}
+.cb:active{transform:translateY(3px);box-shadow:0 2px 0 #b45309}.stormy .cb:active{box-shadow:0 2px 0 #0369a1}
+.ft{position:absolute;font-weight:bold;color:#16a34a;font-size:1.4rem;pointer-events:none;animation:fu .7s ease-out forwards;text-shadow:1px 1px 0 #fff;z-index:10}
+body.stormy .ft{color:#4ade80;text-shadow:1px 1px 0 #000}
+@keyframes fu{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-60px) scale(1.3)}}
+.bmc{display:flex;justify-content:center;gap:5px;margin-bottom:10px;background:rgba(254,240,138,.6);padding:8px;border-radius:12px;border:1px solid #facc15}
+body.stormy .bmc{background:rgba(51,65,85,.6);border:1px solid #475569}
+.bmb{background:#fef08a;color:#713f12;border:2px solid #ca8a04;padding:6px 10px;font-size:.8rem;font-weight:bold;border-radius:8px;cursor:pointer}
+body.stormy .bmb{background:#334155;color:#cbd5e1;border:2px solid #475569}
+.bmb.active{background:#ca8a04;color:#fff;box-shadow:0 2px 0 #854d0e}
+body.stormy .bmb.active{background:#0284c7;color:#fff;box-shadow:0 2px 0 #0369a1}
+.sbc{display:flex;gap:10px;margin-top:10px}
+.osb{flex:1;background:#ca8a04;color:#fff;border:none;padding:12px 10px;font-size:.95rem;font-weight:bold;border-radius:10px;cursor:pointer;box-shadow:0 4px 0 #854d0e}
+body.stormy .osb{background:#0284c7;box-shadow:0 4px 0 #0369a1}
+.osb.inv{background:#2563eb;box-shadow:0 4px 0 #1d4ed8}
+.osb.sup{background:#7c3aed;box-shadow:0 4px 0 #5b21b6}
+.wipe{background:#ef4444;box-shadow:0 4px 0 #b91c1c}
+.mo{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);justify-content:center;align-items:center;z-index:100}
+.mc{background:#fffbeb;padding:20px;border-radius:16px;border:3px solid #ca8a04;max-width:420px;width:90%;text-align:left;box-shadow:0 10px 25px rgba(0,0,0,.3)}
+body.stormy .mc{background:#1e293b;border:3px solid #38bdf8;color:#f8fafc}
+.mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;border-bottom:2px dashed #ca8a04;padding-bottom:8px}
+body.stormy .mh{border-bottom:2px dashed #475569}
+.mt{font-size:1.1rem;font-weight:bold;color:#b45309}
+body.stormy .mt{color:#38bdf8}
+.cms{background:#ef4444;color:#fff;border:none;padding:5px 10px;font-weight:bold;border-radius:6px;cursor:pointer}
+.sc{max-height:300px;overflow-y:auto;padding-right:4px}
+.uc{background:rgba(254,240,138,.4);padding:8px 12px;border-radius:10px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;border:1px solid #facc15}
+body.stormy .uc{background:rgba(51,65,85,.4);border:1px solid #475569}
+.ui{font-size:.8rem;color:#451a03}
+body.stormy .ui{color:#cbd5e1}
+.bb{background:#16a34a;color:#fff;border:none;padding:6px 12px;font-size:.8rem;font-weight:bold;border-radius:6px;cursor:pointer;flex-shrink:0;margin-left:8px}
+.bb:disabled{background:#94a3b8;cursor:not-allowed}
+.ss{font-size:.8rem;color:#854d0e;margin-top:15px;height:15px}
+body.stormy .ss{color:#94a3b8}
+.eb{background:#0284c7;color:#fff;padding:8px;border-radius:10px;margin-bottom:10px;font-size:.9rem;font-weight:bold;text-align:center;box-shadow:0 4px 12px rgba(2,132,199,.4)}
+</style>
+</head>
+<body>
+<div class="gc">
+    <h1>🍋 Sell Lemons</h1>
+    <div id="eb" class="eb" style="display:none">⛈️ Dark Sky Active! 4x Production (<span id="et">120</span>s)</div>
+    <div class="st">DPS: $<span id="dps">0</span></div>
+    <div class="st">Click Power: $<span id="cp">1</span></div>
+    <div class="st" id="ist" style="display:none;color:#2563eb">Investors: <span id="ic">0</span> (+<span id="ib">0</span>%)</div>
+    <div class="st" id="sst" style="display:none;color:#7c3aed">Super Rebirths: <span id="sbc">0</span> (x1,000)</div>
+    
+    <div id="score">$0</div>
+    <div class="cw"><button class="cb" id="clickBtn">Sell Lemon! 🍋</button></div>
+
+    <div class="bmc">
+        <span style="font-size:.8rem;font-weight:bold;color:#713f12;align-self:center">Buy:</span>
+        <button class="bmb active" id="m-1" onclick="setMode(1)">1</button>
+        <button class="bmb" id="m-10" onclick="setMode(10)">10</button>
+        <button class="bmb" id="m-25" onclick="setMode(25)">25</button>
+        <button class="bmb" id="m-100" onclick="setMode(100)">100</button>
+        <button class="bmb" id="m-max" onclick="setMode('max')">MAX</button>
+    </div>
+    
+    <div class="sbc">
+        <button class="osb" onclick="openModal('tycoonModal')">🏪 Tycoons</button>
+        <button class="osb" onclick="openModal('toolModal')">⚡ Tools</button>
+    </div>
+    <div class="sbc" id="invBtn" style="display:none"><button class="osb inv" onclick="openModal('investorModal')">💼 Investors</button></div>
+    <div class="sbc" id="supBtn" style="display:none"><button class="osb sup" onclick="openModal('superRebirthModal')">🌌 Super Rebirth</button></div>
+    <div class="sbc"><button class="osb wipe" onclick="wipeSave()">🗑️ Wipe Save</button></div>
+    <div class="ss" id="saveStatus">Stand Loaded!</div>
+</div>
+
+<div class="mo" id="tycoonModal"><div class="mc"><div class="mh"><div class="mt">Tycoon Shop</div><button class="cms" onclick="closeModal('tycoonModal')">✕</button></div><div class="sc" id="tCont"></div></div></div>
+<div class="mo" id="toolModal"><div class="mc"><div class="mh"><div class="mt">Tool Shop</div><button class="cms" onclick="closeModal('toolModal')">✕</button></div><div class="sc" id="pCont"></div></div></div>
+<div class="mo" id="investorModal"><div class="mc"><div class="mh"><div class="mt">Investor Board</div><button class="cms" onclick="closeModal('investorModal')">✕</button></div><div class="sc"><div class="uc" style="flex-direction:column;align-items:flex-start;gap:8px"><div class="ui"><strong>IPO</strong><br><small>Reset for +2% boost/investor.</small><br><br><small>Current: <span id="mic">0</span></small><br><small style="color:#16a34a;font-weight:bold">Claim: +<span id="pin">0</span></small></div><button class="bb" style="width:100%;background:#2563eb" onclick="prestige()">Claim Investors</button></div></div></div></div>
+<div class="mo" id="superRebirthModal"><div class="mc"><div class="mh"><div class="mt">Super Rebirth</div><button class="cms" onclick="closeModal('superRebirthModal')">✕</button></div><div class="sc"><div class="uc" style="flex-direction:column;align-items:flex-start;gap:8px"><div class="ui"><strong>Galactic Rebirth</strong><br><small>Requires 1 Quadrillion investors. Resets all for x1,000 multiplier.</small><br><br><small>Tiers: <span id="msbc">0</span></small></div><button class="bb" id="sBtn" style="width:100%;background:#7c3aed" onclick="superRebirth()" disabled>Super Rebirth</button></div></div></div></div>
+
+<script>
+let g={score:0,life:0,mode:1,reg:false,inv:0,sup:0,
+t:[
+{id:'l1',n:'Lemonade Stand',d:2,c:1,cost:10,cnt:0,m:1.22},
+{id:'l2',n:'Lemon Trees',d:6,c:3,cost:50,cnt:0,m:1.22},
+{id:'l3',n:'Lemon Depot',d:15,c:100,cost:25000,cnt:0,m:1.4},
+{id:'l4',n:'Lemon Factory',d:50,c:25,cost:120000,cnt:0,m:1.22},
+{id:'l5',n:'Lemon Headquarters',d:260,c:130,cost:1300000,cnt:0,m:1.22},
+{id:'l6',n:'Lemon Labs',d:1400,c:700,cost:14000000,cnt:0,m:1.22},
+{id:'l7',n:'Lemon Bots',d:7800,c:3900,cost:200000000,cnt:0,m:1.22},
+{id:'l8',n:'Lemon God',d:44000,c:22000,cost:3300000000,cnt:0,m:1.22}
+],
+p:[
+{id:'p1',n:'Sharp Knife',desc:'Boosts click power',bc:2,cost:150,cnt:0,m:2.1},
+{id:'p2',n:'Electric Juicer',desc:'Boosts click power',bc:10,cost:800,cnt:0,m:2.1},
+{id:'p3',n:'Golden Squeezer',desc:'Boosts click power',bc:50,cost:5000,cnt:0,m:2.1},
+{id:'p4',n:'Turbo Blender',desc:'Boosts click power',bc:200,cost:30000,cnt:0,m:2.1}
+],
+sh:{cnt:0,cost:2500,m:23},
+fd:{cnt:0,cost:10000,m:23},
+ju:{cnt:0,cost:50000,m:50000,prod:1},
+pi:{cnt:0,cost:100000,m:50000,prod:1},
+tr:{cnt:0,cost:1e93,m:1e15}};
+
+const SEX=1e21,QUAD=1e15,TRIG=1e93;
+let stormy=false,stormTime=0,stormCounter=0;
+
+function fn(n){
+    if(n<1000)return Math.floor(n).toLocaleString();
+    let s=[""," Thousand"," Million"," Billion"," Trillion"," Quadrillion"," Quintillion"," Sextillion"," Septillion"," Octillion"," Nonillion"," Decillion"];
+    let i=Math.floor(Math.log10(n)/3),v=n/Math.pow(10,i*3);
+    return v.toFixed(v<10?2:1)+s[i];
+}
+
+function calcInv(l){return l<SEX?0:Math.floor(Math.sqrt(l/SEX))}
+function openModal(id){document.getElementById(id).style.display='flex'}
+function closeModal(id){document.getElementById(id).style.display='none'}
+function setMode(m){g.mode=m;document.querySelectorAll('.bmb').forEach(b=>b.classList.remove('active'));document.getElementById(`m-${m}`).classList.add('active');render();update()}
+
+function getMult(){return(1+(g.inv*0.02))*Math.pow(1000,g.sup)*Math.pow(10,g.tr.cnt)*(stormy?4:1)}
+
+function getDPS(){
+    let d=0;g.t.forEach(u=>{if(u.cnt>0)d+=u.d*Math.pow(1.1,u.cnt)});
+    if(g.sh.cnt>0)d*=Math.pow(1.5,g.sh.cnt);
+    if(g.fd.cnt>0)d*=Math.pow(1.5,g.fd.cnt);
+    if(g.ju.prod>1)d*=g.ju.prod;
+    return d*getMult();
+}
+
+function getCP(){
+    let c=1;g.p.forEach(p=>{if(p.cnt>0)c+=p.bc*Math.pow(1.1,p.cnt)});
+    g.t.forEach(u=>{if(u.cnt>0)c+=u.c*Math.pow(1.1,u.cnt)});
+    if(g.reg)c*=2;
+    if(g.fd.cnt>0)c*=Math.pow(1.5,g.fd.cnt);
+    if(g.pi.prod>1)c*=g.pi.prod;
+    return c*getMult();
+}
+
+function calcBulk(item){
+    let cost=item.cost,m=item.m||1.15,tot=0,amt=0,temp=g.score;
+    if(g.mode==='max'){while(temp>=cost&&amt<10000){temp-=cost;tot+=cost;amt++;cost*=m;}}
+    else{for(let i=0;i<g.mode;i++){tot+=cost;amt++;cost*=m;}}
+    return{amount:amt,totalCost:tot};
+}
+
+try{let s=localStorage.getItem('lemSaveV34');if(s)Object.assign(g,JSON.parse(s));}catch(e){}
+function save(){try{localStorage.setItem('lemSaveV34',JSON.stringify(g));let st=document.getElementById('saveStatus');st.innerText='Saved!';setTimeout(()=>st.innerText='',2000);}catch(e){}}
+
+function render(){
+    let tc=document.getElementById('tCont');
+    if(tc){tc.innerHTML='';g.t.forEach((u,i)=>{let b=calcBulk(u);tc.innerHTML+=`<div class="uc"><div class="ui"><strong>${u.n}</strong> (${u.cnt})</div><button class="bb" onclick="buyTycoon(${i})">Buy ($${fn(b.totalCost||u.cost)})</button></div>`;});}
+    
+    let pc=document.getElementById('pCont');
+    if(pc){pc.innerHTML=`
+    <div class="uc"><div class="ui"><strong>Cash Register</strong><br><small>Doubles your click power permanently</small></div><button class="bb" ${g.reg?'disabled':''} onclick="buyReg()">${g.reg?'Sold':'Buy ($1,000)'}</button></div>
+    <div class="uc"><div class="ui"><strong>Lemon Shirt</strong> (${g.sh.cnt})<br><small>Boosts both DPS and Click Power</small></div><button class="bb" onclick="buyItem('sh')">Buy ($${fn(g.sh.cost)})</button></div>
+    <div class="uc"><div class="ui"><strong>Lemon Food</strong> (${g.fd.cnt})<br><small>Boosts both DPS and Click Power</small></div><button class="bb" onclick="buyItem('fd')">Buy ($${fn(g.fd.cost)})</button></div>
+    <div class="uc"><div class="ui"><strong>Lemon Juice</strong> (${g.ju.cnt})<br><small>Multiplies your total DPS</small></div><button class="bb" onclick="buyJuice()">Buy ($${fn(g.ju.cost)})</button></div>
+    <div class="uc"><div class="ui"><strong>Lemon Pie</strong> (${g.pi.cnt})<br><small>Multiplies your total Click Power</small></div><button class="bb" onclick="buyPie()">Buy ($${fn(g.pi.cost)})</button></div>`;
+    if(g.life>=TRIG||g.tr.cnt>0)pc.innerHTML+=`<div class="uc"><div class="ui"><strong>Trigintillion Accelerator</strong> (${g.tr.cnt})<br><small>Massive global 10x production multiplier</small></div><button class="bb" onclick="buyTrig()">Buy ($${fn(g.tr.cost)})</button></div>`;
+    g.p.forEach((p,i)=>{let b=calcBulk(p);pc.innerHTML+=`<div class="uc"><div class="ui"><strong>${p.n}</strong> (${p.cnt})<br><small>${p.desc}</small></div><button class="bb" onclick="buyPower(${i})">Buy ($${fn(b.totalCost||p.cost)})</button></div>`;});}
+}
+
+function update(){
+    document.getElementById('dps').innerText=fn(getDPS());
+    document.getElementById('cp').innerText=fn(getCP());
+    document.getElementById('score').innerText='$'+fn(g.score);
+    let tp=calcInv(g.life);
+    document.getElementById('invBtn').style.display=(tp>0||g.inv>0)?'flex':'none';
+    document.getElementById('ist').style.display=(tp>0||g.inv>0)?'block':'none';
+    document.getElementById('supBtn').style.display=(g.inv>=QUAD||g.sup>0)?'flex':'none';
+    document.getElementById('sst').style.display=(g.inv>=QUAD||g.sup>0)?'block':'none';
+    document.getElementById('ic').innerText=fn(g.inv);
+    document.getElementById('ib').innerText=fn(g.inv*2);
+    document.getElementById('mic').innerText=fn(g.inv);
+    document.getElementById('pin').innerText=fn(Math.max(0,tp-g.inv));
+    document.getElementById('sbc').innerText=fn(g.sup);
+    document.getElementById('msbc').innerText=fn(g.sup);
+    let sb=document.getElementById('sBtn');if(g.inv>=QUAD){sb.disabled=false;sb.innerText="Perform Super Rebirth";}
+}
+
+render();update();
+
+document.getElementById('clickBtn').addEventListener('click',e=>{
+    let cp=getCP();g.score+=cp;g.life+=cp;
+    update();if(g.life>=TRIG)render();
+    let f=document.createElement('div');f.className='ft';f.innerText=`+$${fn(cp)}`;
+    let r=e.target.getBoundingClientRect();f.style.left=`${e.clientX-r.left-15}px`;f.style.top=`${e.clientY-r.top-20}px`;
+    e.target.appendChild(f);setTimeout(()=>f.remove(),700);
+});
+
+function prestige(){let tp=calcInv(g.life);if(tp>g.inv){g.inv=tp;resetRun();}}
+function superRebirth(){if(g.inv>=QUAD){g.sup++;g.inv=0;resetRun();}}
+function wipeSave(){if(confirm("Wipe save and restart?")){localStorage.removeItem('lemSaveV34');location.reload();}}
+
+function resetRun(){
+    g.score=0;g.reg=false;g.sh={cnt:0,cost:2500,m:23};g.fd={cnt:0,cost:10000,m:23};
+    g.ju={cnt:0,cost:50000,m:50000,prod:1};g.pi={cnt:0,cost:100000,m:50000,prod:1};g.tr={cnt:0,cost:1e93,m:1e15};
+    g.t.forEach(u=>{u.cnt=0;if(u.id==='l1')u.cost=10;if(u.id==='l2')u.cost=50;if(u.id==='l3')u.cost=25000;if(u.id==='l4')u.cost=120000;if(u.id==='l5')u.cost=1300000;if(u.id==='l6')u.cost=14000000;if(u.id==='l7')u.cost=200000000;if(u.id==='l8')u.cost=3300000000;});
+    g.p.forEach(p=>{p.cnt=0;if(p.id==='p1')p.cost=150;if(p.id==='p2')p.cost=800;if(p.id==='p3')p.cost=5000;if(p.id==='p4')p.cost=30000;});
+    ['investorModal','superRebirthModal'].forEach(closeModal);render();update();save();
+}
+
+function buyTycoon(i){let u=g.t[i],b=calcBulk(u);if(b.amount>0&&g.score>=b.totalCost){g.score-=b.totalCost;u.cnt+=b.amount;for(let j=0;j<b.amount;j++)u.cost*=u.m;render();update();}}
+function buyReg(){if(!g.reg&&g.score>=1000){g.score-=1000;g.reg=true;render();update();}}
+function buyItem(k){let it=g[k];if(g.score>=it.cost){g.score-=it.cost;it.cnt++;it.cost*=it.m;render();update();}}
+function buyJuice(){let it=g.ju;if(g.score>=it.cost){g.score-=it.cost;it.cnt++;let rm=Math.random()*5+2;it.prod=it.prod===1?rm:it.prod*rm;it.cost*=it.m;render();update();}}
+function buyPie(){let it=g.pi;if(g.score>=it.cost){g.score-=it.cost;it.cnt++;let rm=Math.random()*5+2;it.prod=it.prod===1?rm:it.prod*rm;it.cost*=it.m;render();update();}}
+function buyTrig(){let it=g.tr;if(g.score>=it.cost){g.score-=it.cost;it.cnt++;it.cost*=it.m;render();update();}}
+function buyPower(i){let p=g.p[i],b=calcBulk(p);if(b.amount>0&&g.score>=b.totalCost){g.score-=b.totalCost;p.cnt+=b.amount;for(let j=0;j<b.amount;j++)p.cost*=p.m;render();update();}}
+
+setInterval(()=>{
+    if(stormy){
+        stormTime-=0.01;document.getElementById('et').innerText=Math.ceil(stormTime);
+        if(stormTime<=0){stormy=false;document.body.classList.remove('stormy');document.getElementById('eb').style.display='none';update();}
+    }else{
+        stormCounter++;
+        if(stormCounter>=60000){stormCounter=0;stormy=true;stormTime=120;document.body.classList.add('stormy');document.getElementById('eb').style.display='block';update();}
+    }
+},10);
+
+setInterval(()=>{let d=getDPS();if(d>0){let inc=d/100;g.score+=inc;g.life+=inc;update();if(g.life>=TRIG)render();}},10);
+setInterval(save,10000);
+</script>
+</body>
+</html>
+
+
+
